@@ -1,13 +1,15 @@
-import logo from './logo.svg';
+import Box from '@material-ui/core/Box';
+
 import React from 'react'
 import FilteredList from './FilteredList.jsx';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <FilteredList list={carList} /> 
-    </div>
+    <Box className="App" >
+      <h1>Car Store</h1>
+      <FilteredList list={carList} />
+    </Box>
   );
 }
 

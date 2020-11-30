@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+	/* display: flex; */
 }
 
 code {
@@ -17,3 +18,12 @@ img {
   height: auto;
 }
 
+.display-card {
+  max-width: 300px;
+  height: auto;
+}
+
+.display-case {
+  display: flex;
+  flex-wrap: wrap;
+}
