@@ -4,6 +4,9 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 
 
 export default class FilteredList extends React.Component {
@@ -11,12 +14,13 @@ export default class FilteredList extends React.Component {
     super(props);
     this.state = {
       size: "All",
-      color: "All"
+      color: "All",
+      sort: 0,
     }
   }
 
   onSelectFilterSize = (event) => {
-    this.setState({'size': event.target.value});
+    this.setState({ size: event.target.value });
   }
 
   matchesFilterSize(car) {
@@ -24,11 +28,35 @@ export default class FilteredList extends React.Component {
   }
 
   onSelectFilterColor = (event) => {
-    this.setState({'color': event.target.value});
+    this.setState({ color: event.target.value });
   }
 
   matchesFilterColor(car) {
     return (this.state.color === "All") || (this.state.color === car.color);
+  }
+
+  handleSortChange = (event) => {
+    this.setState({ sort: event.target.value });
+  }
+
+  compare = (carA, carB) => {
+    if (this.state.sort === 0) {
+      var nameA = carA.name.toUpperCase();
+      var nameB = carB.name.toUpperCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    if (this.state.sort === 1) {
+      return carA.price - carB.price;
+    } else {
+      return -(carA.price - carB.price);
+    }
   }
 
   render() {
@@ -40,7 +68,7 @@ export default class FilteredList extends React.Component {
             <RadioGroup row aria-label="position" name="position" defaultValue="All" onChange={this.onSelectFilterSize}>
               <FormControlLabel
                 value="All"
-                control={<Radio color="primary" />} 
+                control={<Radio color="primary" />}
                 label="All"
                 labelPlacement="top"
               />
@@ -107,17 +135,34 @@ export default class FilteredList extends React.Component {
               />
             </RadioGroup>
           </FormControl>
-
+        </div>
+        <div>
+          <FormControl >
+            <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={this.state.sort}
+              onChange={this.handleSortChange}
+            >
+              <MenuItem value={0}>Featured</MenuItem>
+              <MenuItem value={1}>Price: Low to High</MenuItem>
+              <MenuItem value={2}>Price: High to Low</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+        <div>
           {this.props.list.filter((car) =>
             this.matchesFilterSize(car)
           ).filter((car) =>
             this.matchesFilterColor(car)
-          ).map((car) => (
-            <>
-              <p>{car.name}, {car.size}, {car.color}, ${car.price}.00</p>
-              <img src={car.image} alt={car.name}></img>
-            </>
-          ))}
+          ).sort(this.compare)
+            .map((car) => (
+              <>
+                <p>{car.name}, {car.size}, {car.color}, ${car.price}.00</p>
+                <img src={car.image} alt={car.name}></img>
+              </>
+            ))}
         </div>
       </div>
     );
