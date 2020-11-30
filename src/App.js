@@ -1,42 +1,17 @@
 import logo from './logo.svg';
+import React from 'react'
+import FilteredList from './FilteredList.jsx';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <FilteredList list={carList} /> 
     </div>
   );
 }
 
 const carList = [
-  {
-    name: "Sally",
-    image: "https://upload.wikimedia.org/wikipedia/commons/6/61/Cars_movie%27s_car.jpg",
-    size: "Small",
-    color: "Blue",
-    price: 100000,
-  },
-  {
-    name: "Rocket",
-    image: "https://upload.wikimedia.org/wikipedia/commons/a/a1/Yellow_toy_car.jpg",
-    size: "Tiny",
-    color: "Yellow",
-    price: 10,
-  },
   {
     name: "BMW 3 Series",
     image: "https://pixnio.com/free-images/2018/11/27/2018-11-27-15-44-25-1200x674.jpg",
@@ -56,7 +31,7 @@ const carList = [
     image: "https://upload.wikimedia.org/wikipedia/commons/6/6b/Tata_Buzzard_Genf_2019_1Y7A5791.jpg",
     size: "Large",
     color: "Blue",
-    price: 30400
+    price: 26400
   },
   {
     name: "Big Mack Truck",
@@ -106,7 +81,21 @@ const carList = [
     size: "Large",
     color: "Blue",
     price: 14400,
-  }
+  },
+  {
+    name: "Sally",
+    image: "https://upload.wikimedia.org/wikipedia/commons/6/61/Cars_movie%27s_car.jpg",
+    size: "Small",
+    color: "Blue",
+    price: 100000,
+  },
+  {
+    name: "Rocket",
+    image: "https://upload.wikimedia.org/wikipedia/commons/a/a1/Yellow_toy_car.jpg",
+    size: "Tiny",
+    color: "Yellow",
+    price: 1,
+  },
 ];
 
 export default App;
