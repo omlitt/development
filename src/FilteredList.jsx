@@ -12,6 +12,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 
 import DisplayItem from './DisplayItem.jsx';
 
@@ -58,6 +59,16 @@ export default class FilteredList extends React.Component {
     })
   }
 
+  handleRemove = (name) => {
+    this.props.list.forEach((car) => {
+      if (car.name === name) {
+        car.quantity--;
+        this.forceUpdate();
+        return;
+      }
+    })
+  }
+
   reduceCost = (acc, cur) => {
     return acc + cur.quantity * cur.price;
   }
@@ -85,7 +96,7 @@ export default class FilteredList extends React.Component {
   render() {
     return (
       <Box display="flex" >
-        <Box>
+        <Box width="70%" justifyContent="center">
           <Box>
             <FormControl component="fieldset">
               <FormLabel component="legend">Size</FormLabel>
@@ -182,26 +193,36 @@ export default class FilteredList extends React.Component {
               this.matchesFilterColor(car)
             ).sort(this.compare)
               .map((car) => (
-                <DisplayItem car={car} onClick={this.handleAdd}/>
+                <DisplayItem car={car} onClick={this.handleAdd} key={car.name} />
               ))}
           </Box>
         </Box>
-        <Box maxWidth="620px" height="auto">
+        <Box width="30%" height="auto">
           <h2>Cart</h2>
           <Box display="flex" flexWrap="wrap" flexDirection="column">
             {this.props.list
-            .filter((car) => car.quantity > 0)
-            .map((car) => (
-              <Card variant="outlined">
-                <CardContent>
-                  <h3>{car.name}</h3>
-                  <p>{car.quantity}</p>
-                </CardContent>
-              </Card>
-            ))}
+              .filter((car) => car.quantity > 0)
+              .map((car) => (
+                <Card variant="outlined" key={car.name}>
+                  <CardContent>
+                    <h3>{car.name}</h3>
+                    <Grid container justify="center">
+                      <Grid key={1} item>
+                        <Button size="small" onClick={() => this.handleRemove(car.name)}>-</Button>
+                      </Grid>
+                      <Grid key={2} item>
+                        <p>{car.quantity}</p>
+                      </Grid>
+                      <Grid key={3} item>
+                        <Button size="small" onClick={() => this.handleAdd(car.name)}>+</Button>
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+                </Card>
+              ))}
           </Box>
-            <p><strong>Total: </strong>{
-            "$"+commaNumber(this.props.list.reduce(this.reduceCost, 0))}</p>
+          <p><strong>Total: </strong>{
+            "$" + commaNumber(this.props.list.reduce(this.reduceCost, 0))}</p>
         </Box>
       </Box>
     );
