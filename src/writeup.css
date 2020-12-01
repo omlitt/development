@@ -1,0 +1,53 @@
+/* Put your style information here! */
+.banner {
+	max-width: 70%;
+}
+img {
+	max-width: 100%;
+}
+body {
+	background-color: #cce6ff;
+	padding: 0;
+	margin: 0;
+}
+
+html * {
+	font-family: trebuchet ms;
+	font-size: 20;
+}
+
+p {
+	/*max-width: 75%;*/
+	margin-left: 30px;
+}
+
+tr, td {
+  border: 1px solid black;
+}
+table {
+	margin-left: 25px;
+	max-width: 75%;
+}
+ul {
+	margin-left: 20px;
+	padding-inline-start: 1em;
+}
+
+main {
+    padding: 30px 120px 16px 120px;
+    margin: 0 auto;
+    max-width: 770px;
+    min-height: 100vh;
+    background-color: white;
+}
+
+#nav {
+	margin-left: 15px;
+	display: inline-block;
+	border: 2px solid;
+	border-color: black;
+	padding-left: 5px;
+	padding-right: 10px;
+	background-color: #cce6ff;
+
+}
