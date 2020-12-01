@@ -9,9 +9,6 @@ var commaNumber = require('comma-number')
 export default class DisplayItem extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            quantity: 0,
-        }
     }
 
     render() {
@@ -26,7 +23,10 @@ export default class DisplayItem extends React.Component {
                     <p><strong>Price: </strong>${commaNumber(this.props.car.price)}</p>
                 </CardContent>
                 <CardActions>
-                    <Button size="medium" variant="outlined" onClick={() => this.props.onClick(this.props.car.name)}>Add to Cart</Button>
+                    <Button size="medium" variant="outlined"
+                        onClick={() => this.props.onClick(this.props.car.name)}>
+                        Add to Cart
+                    </Button>
                 </CardActions>
             </Card>
         );

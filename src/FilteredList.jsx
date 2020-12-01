@@ -8,13 +8,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Box from '@material-ui/core/Box';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
 
 import DisplayItem from './DisplayItem.jsx';
+import CartItem from './CartItem.jsx';
 
 var commaNumber = require('comma-number')
 
@@ -22,6 +18,7 @@ export default class FilteredList extends React.Component {
   constructor(props) {
     super(props);
     this.props.list.map((car) => car.quantity = 0);
+    // Default filter/sort states
     this.state = {
       size: "All",
       color: "All",
@@ -49,6 +46,7 @@ export default class FilteredList extends React.Component {
     this.setState({ sort: event.target.value });
   }
 
+  // Increase item quantity
   handleAdd = (name) => {
     this.props.list.forEach((car) => {
       if (car.name === name) {
@@ -59,6 +57,7 @@ export default class FilteredList extends React.Component {
     })
   }
 
+  // Decrease Item Quantity
   handleRemove = (name) => {
     this.props.list.forEach((car) => {
       if (car.name === name) {
@@ -69,25 +68,20 @@ export default class FilteredList extends React.Component {
     })
   }
 
+  // Aggregator
   reduceCost = (acc, cur) => {
     return acc + cur.quantity * cur.price;
   }
 
   compare = (carA, carB) => {
+    // keep original order
     if (this.state.sort === 0) {
-      const nameA = carA.name.toUpperCase();
-      const nameB = carB.name.toUpperCase();
-      if (nameA < nameB) {
-        return -1;
-      }
-      if (nameA > nameB) {
-        return 1;
-      } else {
-        return 0;
-      }
+      return 0;
     }
+    // price ascending
     if (this.state.sort === 1) {
       return carA.price - carB.price;
+    // price descending
     } else {
       return -(carA.price - carB.price);
     }
@@ -97,6 +91,7 @@ export default class FilteredList extends React.Component {
     return (
       <Box display="flex" >
         <Box width="70%" justifyContent="center">
+          {/* Size Filter */}
           <Box>
             <FormControl component="fieldset">
               <FormLabel component="legend">Size</FormLabel>
@@ -134,6 +129,7 @@ export default class FilteredList extends React.Component {
               </RadioGroup>
             </FormControl>
           </Box>
+          {/* Color Filter */}
           <Box>
             <FormControl component="fieldset">
               <FormLabel component="legend">Color</FormLabel>
@@ -171,6 +167,7 @@ export default class FilteredList extends React.Component {
               </RadioGroup>
             </FormControl>
           </Box>
+          {/* Sort By Dropdown */}
           <Box>
             <FormControl >
               <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
@@ -186,6 +183,7 @@ export default class FilteredList extends React.Component {
               </Select>
             </FormControl>
           </Box>
+          {/* Main Catalog Display */}
           <Box display="flex" flexWrap="wrap">
             {this.props.list.filter((car) =>
               this.matchesFilterSize(car)
@@ -197,30 +195,19 @@ export default class FilteredList extends React.Component {
               ))}
           </Box>
         </Box>
+        {/* Cart */}
         <Box width="30%" height="auto">
           <h2>Cart</h2>
           <Box display="flex" flexWrap="wrap" flexDirection="column">
             {this.props.list
               .filter((car) => car.quantity > 0)
               .map((car) => (
-                <Card variant="outlined" key={car.name}>
-                  <CardContent>
-                    <h3>{car.name}</h3>
-                    <Grid container justify="center">
-                      <Grid key={1} item>
-                        <Button size="small" onClick={() => this.handleRemove(car.name)}>-</Button>
-                      </Grid>
-                      <Grid key={2} item>
-                        <p>{car.quantity}</p>
-                      </Grid>
-                      <Grid key={3} item>
-                        <Button size="small" onClick={() => this.handleAdd(car.name)}>+</Button>
-                      </Grid>
-                    </Grid>
-                  </CardContent>
-                </Card>
+                <CartItem car={car} 
+                add={this.handleAdd} remove={this.handleRemove}
+                key={car.name}/>
               ))}
           </Box>
+          {/* Aggregated Price */}
           <p><strong>Total: </strong>{
             "$" + commaNumber(this.props.list.reduce(this.reduceCost, 0))}</p>
         </Box>
